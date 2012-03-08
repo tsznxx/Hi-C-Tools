@@ -20,7 +20,7 @@ SUBDIRS = $(SRC_DIR)/test \
 	      $(SRC_DIR)/genomeToREFrags \
 		  $(SRC_DIR)/endsMapbility \
 		  $(SRC_DIR)/intersectBed \
-		  $(SRC_DIR)/readsAnnotation
+		  $(SRC_DIR)/bedsAnnotation
 
 UTIL_SUBDIRS =	$(SRC_DIR)/utils/stringUtils \
 				$(SRC_DIR)/utils/gzstream \
