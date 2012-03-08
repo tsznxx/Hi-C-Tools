@@ -18,7 +18,9 @@ export BT_ROOT  = src/utils/BamTools/
 
 SUBDIRS = $(SRC_DIR)/test \
 	      $(SRC_DIR)/genomeToREFrags \
-		  $(SRC_DIR)/endsMapbility
+		  $(SRC_DIR)/endsMapbility \
+		  $(SRC_DIR)/intersectBed \
+		  $(SRC_DIR)/readsAnnotation
 
 UTIL_SUBDIRS =	$(SRC_DIR)/utils/stringUtils \
 				$(SRC_DIR)/utils/gzstream \

@@ -15,5 +15,5 @@
 
 namespace BamTools {
     void getBamBlocks(const BamAlignment &bam, const RefVector &refs, 
-                  BedVector &blocks, bool includeDeletions = true);
+                  BedVec &blocks, bool includeDeletions = true);
 }

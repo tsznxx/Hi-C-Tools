@@ -19,7 +19,7 @@ using namespace std;
   
 namespace BamTools {
     void getBamBlocks(const BamAlignment &bam, const RefVector &refs, 
-                      BedVector &blocks, bool breakOnDeletionOps) {
+                      BedVec &blocks, bool breakOnDeletionOps) {
     
     	CHRPOS currPosition = bam.Position;
         CHRPOS blockStart   = bam.Position;

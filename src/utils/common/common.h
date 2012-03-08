@@ -1,6 +1,6 @@
 /*****************************************************************************
   common.h
-  Last-modified: 07 Mar 2012 11:10:24 AM
+  Last-modified: 08 Mar 2012 11:03:18 AM
 
   (c) 2012 - Yunfei Wang
   Center for Systems Biology
@@ -62,7 +62,7 @@ const USHORT _binNextShift  = 3;        /* How much to shift to get to next larg
  Parameter check macro
 *************************************************/
 
-#define PARAMETER_CHECK(param, paramLen, actualLen) (strncmp(argv[i], param, min(actualLen, paramLen))== 0) && (actualLen == paramLen)
+#define PARAMETER_CHECK(param, paramLen, actualLen) (actualLen == paramLen) && (!strcmp(argv[i], param))
 
 
 /*************************************************

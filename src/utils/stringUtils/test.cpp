@@ -18,6 +18,10 @@ int main()
 	cout << i << j << ToString(i) << ToString(j) << endl;
     Tokenize(c,lst);
 	cout <<lst[0] << "," <<lst[1] <<endl;
+	cout << ToValue<bool>("3") << endl;
+	cout << ToValue<bool>("0") << endl;
+	cout << ToValue<bool>("true") << endl;
+	cout << ToValue<bool>("false") << endl;
 	return 0;
 }
 

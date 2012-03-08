@@ -27,7 +27,7 @@ int main( int argc, char *argv[] )
 	bedfile.Open();
 	LINE_ELEMS elems;
 	LineStatus ls;
-	BedVector beds;
+	BedVec beds;
 	cout << "Starting reading ..." <<endl;
 	while( (ls = bedfile.getNext(elems)) != LINE_INVALID)
 	{
@@ -42,7 +42,7 @@ int main( int argc, char *argv[] )
 	cout << "Sorting ...." <<endl;
 
 	sort(beds.begin(),beds.end());
-	BedVector::iterator it;
+	BedVec::iterator it;
 	for (it=beds.begin();it!=beds.end()-1;it++)
 	{
 		cout << *it << endl;
@@ -63,11 +63,32 @@ int main( int argc, char *argv[] )
 	// Load File to BedMap
 	BedMap bedmap;
 	BedUtils::loadBedFileToMap(bedmap,argv[1]);
-	for(BedMap::iterator it=bedmap.begin();it!=bedmap.end();it++)
+	/*for(BedMap::iterator it=bedmap.begin();it!=bedmap.end();it++)
 		for(binBeds::iterator it2=it->second.begin();it2!=it->second.end();it2++)
-			for(BedVector::iterator it3=it2->second.begin();it3!=it2->second.end();it3++)
-				cout << *it3 << endl;
+			for(BedVec::iterator it3=it2->second.begin();it3!=it2->second.end();it3++)
+				cout << *it3 << endl;*/
 	
+	string bedfile=argv[2];
+	BedVec bedvec; // bed file
+	Hits   hits;
+
+	BedUtils::loadBedFileToVec(bedvec,bedfile);
+
+	for(BedVec::iterator it=bedvec.begin();it!=bedvec.end();it++)
+	{
+		BedUtils::intersectBed(*it,bedmap,hits);
+
+		cout << (*it) << "\t";
+		if(hits.size())
+		{
+			cout << "\t" << hits.begin()->second[0] << "\t" << hits.begin()->first << endl;
+		}
+		else
+			cout << "\t.\t.\t.\t.\t.\t.\t0" << endl;
+		hits.clear();
+	}
+
+
 	return 0;
 }
 

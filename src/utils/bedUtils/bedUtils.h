@@ -1,6 +1,6 @@
 /*****************************************************************************
   bedFile.h
-  Last-modified: 07 Mar 2012 01:24:24 PM
+  Last-modified: 07 Mar 2012 03:59:18 PM
 
   (c) 2012 - Yunfei Wang
   System biology center
@@ -105,7 +105,7 @@ public:
     CHRPOS overlapLength(const Bed &B, bool forcestrand=false) const
     {
         if (isOverlap(B, forcestrand))
-            return max(end,B.end)-min(start,B.start) - this->size()- B.size();
+            return size() + B.size() -  max(end,B.end) + min(start,B.start);
         else
             return 0;
     }
@@ -217,16 +217,18 @@ enum FileType
 // Data structure typedefs
 //*************************************************
 
-typedef vector<Bed>    BedVector;
+typedef vector<Bed>    BedVec;
 //typedef vector<MATE> mateVector;
 
-typedef map<BIN, BedVector,    std::less<BIN> > binBeds;
+typedef map<BIN, BedVec,    std::less<BIN> > binBeds;
 //typedef map<BIN, mateVector, std::less<BIN> > binsToMates;
 
 typedef map<string, binBeds, std::less<string> >    BedMap;
 //typedef map<string, binsToMates, std::less<string> > masterMateMap;
-typedef map<string, BedVector, std::less<string> >     BedMapNoBin;
+typedef map<string, BedVec, std::less<string> >     BedMapNoBin;
 
+// Hits of inersectBed < CHRPOS overlap, BedVec overlappedBeds>
+typedef map<CHRPOS,BedVec, std::greater<CHRPOS> > Hits;
 
 /************************************************
  * BedUtils
@@ -239,15 +241,15 @@ namespace BedUtils
 	void bowtieToBed(Bed &tbed, const vector<string> &elems);
 	void tabToBed(Bed &tbed, const vector<string> &elems);
 
-	// BedVector
-	void loadBedFileToVector(BedVector &bedvec, const string &bedfile);
+	// BedVec
+	void loadBedFileToVec(BedVec &bedvec, const string &bedfile);
 
 	// BedMap related
 	void loadBedFileToMap   (BedMap &bedmap, const string &bedfile);
-	void loadBedVectorToMap (BedMap &bedmap, const BedVector & bedvector);
+	void loadBedVecToMap (BedMap &bedmap, const BedVec & bedvector);
 
 	// IntersectBed
-	void intersectBed (const Bed &tbed, BedMap &bedmap,BedVector &Hits, const bool &forcestrand = false);
+	void intersectBed (const Bed &tbed, BedMap &bedmap, Hits &hits, const bool &forcestrand = false);
 	
 };
 

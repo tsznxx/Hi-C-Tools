@@ -127,8 +127,17 @@ void BedUtils::bowtieToBed(Bed &tbed, const LINE_ELEMS &elems)
 	tbed.strand = elems[1];
 }
 
-// Load Bed file into BedVector
-void loadBedFileToVec( BedVec
+// Load Bed file into BedVec
+void BedUtils::loadBedFileToVec( BedVec &bedvec, const string &bedfile)
+{
+	LINE_ELEMS elems;
+	ColumnReader breader(bedfile);
+	breader.Open();
+	while (breader.getNext(elems)!=LINE_INVALID)
+		bedvec.push_back(Bed(elems));
+	breader.Close();
+}
+
 // BedMap related
 // Load Bed file into BedMap
 void BedUtils::loadBedFileToMap   (BedMap &bedmap, const string &bedfile)
@@ -144,20 +153,20 @@ void BedUtils::loadBedFileToMap   (BedMap &bedmap, const string &bedfile)
 	}
 }
 
-// Load BedVector into BedMap
-void BedUtils::loadBedVectorToMap   (BedMap &bedmap, const BedVector & bedvector)
+// Load BedVec into BedMap
+void BedUtils::loadBedVecToMap   (BedMap &bedmap, const BedVec & bedvector)
 {
-	for(BedVector::const_iterator it=bedvector.begin(); it!=bedvector.end();it++)
+	for(BedVec::const_iterator it=bedvector.begin(); it!=bedvector.end();it++)
 		bedmap[it->chrom][it->getBIN()].push_back(*it);
 }
 
 // Intersect Bed
-void intersectBed (const Bed &tbed, BedMap &bedmap,BedVector &Hits, const bool &forcestrand)
+void BedUtils::intersectBed (const Bed &tbed, BedMap &bedmap, Hits &hits, const bool &forcestrand)
 {
-	CHRPOS overlap,maxoverlap=0;
+	CHRPOS overlap;
 	BIN startBin,endBin,offset;
-	BedVector::const_iterator bedItr;
-	BedVector::const_iterator bedEnd;
+	BedVec::const_iterator bedItr;
+	BedVec::const_iterator bedEnd;
 
 	startBin = tbed.start   >> _binFirstShift;
 	endBin   = (tbed.end-1) >> _binFirstShift;
@@ -173,15 +182,7 @@ void intersectBed (const Bed &tbed, BedMap &bedmap,BedVector &Hits, const bool &
 			{
 				overlap = tbed.overlapLength(*bedItr, forcestrand);
 				if(overlap)
-				{
-					if(overlap>maxoverlap) // Make sure the best hit is the first element in Hits.
-					{
-						maxoverlap=overlap;
-						Hits.insert(Hits.begin(),*bedItr);
-					}
-					else
-						Hits.push_back(*bedItr);
-				}
+					hits[overlap].push_back(*bedItr);
 			}
 		}
 		startBin >>= _binNextShift;
