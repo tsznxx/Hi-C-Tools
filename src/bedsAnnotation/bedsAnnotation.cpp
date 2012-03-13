@@ -1,6 +1,6 @@
 /*****************************************************************************
   bedsAnnotation.cpp
-  Last-modified: 08 Mar 2012 02:05:13 PM
+  Last-modified: 12 Mar 2012 06:24:47 PM
 
   (c) 2012 - Yunfei Wang
   Center for Systems Biology
@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
         {       
             if ((++i) < argc)
 			{
-                Tokenize(string(argv[i]),annofiles,",");
+                StringUtils::tokenize(string(argv[i]),annofiles,",");
 			}
         }
         else if ((PARAMETER_CHECK("-s", 2, parameterLength)) || (PARAMETER_CHECK("--forcestrand", 13, parameterLength)))
@@ -111,7 +111,7 @@ int main(int argc, char* argv[])
 		BedUtils::loadBedFileToMap(bedmaps[i],annofiles[i]);
 
 	// Annotation
-	beds.Open();
+	beds.open();
 	while(beds.getNext(elems)!=LINE_INVALID)
 	{
 		Bed tbed(elems);

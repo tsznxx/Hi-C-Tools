@@ -1,6 +1,6 @@
 /*****************************************************************************
   intersectBed.cpp
-  Last-modified: 08 Mar 2012 10:04:53 AM
+  Last-modified: 12 Mar 2012 06:23:42 PM
 
   (c) 2012 - Yunfei Wang
   Center for Systems Biology
@@ -77,12 +77,12 @@ int main(int argc, char* argv[])
 		else if ((PARAMETER_CHECK("-s", 2, parameterLength)) || (PARAMETER_CHECK("--forcestrand", 12, parameterLength)))
 		{
 			if ((++i) < argc)
-				forcestrand=ToValue<int>(argv[i]);
+				forcestrand=StringUtils::toValue<int>(argv[i]);
 		}
 		else if ((PARAMETER_CHECK("-f", 2, parameterLength)) || (PARAMETER_CHECK("--fraction", 10, parameterLength)))
 		{
 			if ((++i) < argc)
-				fraction = ToValue<float>(argv[i]);
+				fraction = StringUtils::toValue<float>(argv[i]);
 		}
         else
         {       
@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
 	Hits hits;
 	BedMap  bedmap;
 	ColumnReader beds(bedafile);
-	beds.Open();
+	beds.open();
 	
 	BedUtils::loadBedFileToMap(bedmap,bedbfile);
 	while(beds.getNext(elems)!=LINE_INVALID)
@@ -118,7 +118,7 @@ int main(int argc, char* argv[])
 		hits.clear();
 	}
 	
-	beds.Close();
+	beds.close();
 
 
     return 0;

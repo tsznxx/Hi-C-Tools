@@ -42,11 +42,11 @@ Bed::Bed (const vector < string > &elems, const string &desc)
       cerr << "Vector doesn't contain enough elements!" << endl;
       exit (1);
   }
-  chrom = elems[0];
-  start = atoi (elems[1].c_str ());
-  end = atoi (elems[2].c_str ());
-  name = l > 3 ? elems[3] : "";
-  score = l > 4 ? atof (elems[4].c_str ()) : 0.0;
+  chrom  = elems[0];
+  start  = StringUtils::toValue<CHRPOS> (elems[1]);
+  end    = StringUtils::toValue<CHRPOS> (elems[2]);
+  name   = l > 3 ? elems[3] : "";
+  score  = l > 4 ? StringUtils::toValue<float> (elems[4]) : 0.0;
   strand = l > 5 ? elems[5] : ".";
 
   if (l > 6)
@@ -121,7 +121,7 @@ void BedUtils::bowtieToBed(Bed &tbed, const LINE_ELEMS &elems)
 {
 	//Bed([x[2],x[3],x[3]+len(x[4]),x[0],1,x[1]])	
 	tbed.chrom  = elems[2];
-	tbed.start  = ToValue<CHRPOS>(elems[3]);
+	tbed.start  = StringUtils::toValue<CHRPOS>(elems[3]);
 	tbed.end    = tbed.start+elems[4].size();
 	tbed.name   = elems[0];
 	tbed.strand = elems[1];
@@ -132,10 +132,10 @@ void BedUtils::loadBedFileToVec( BedVec &bedvec, const string &bedfile)
 {
 	LINE_ELEMS elems;
 	ColumnReader breader(bedfile);
-	breader.Open();
+	breader.open();
 	while (breader.getNext(elems)!=LINE_INVALID)
 		bedvec.push_back(Bed(elems));
-	breader.Close();
+	breader.close();
 }
 
 // BedMap related
@@ -145,7 +145,7 @@ void BedUtils::loadBedFileToMap   (BedMap &bedmap, const string &bedfile)
 	LINE_ELEMS elems;
 	ColumnReader bedreader(bedfile);
 
-	bedreader.Open();
+	bedreader.open();
 	while(bedreader.getNext(elems)!=LINE_INVALID)
 	{
 		Bed tbed(elems);

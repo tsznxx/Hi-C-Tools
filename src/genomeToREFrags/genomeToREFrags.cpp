@@ -1,6 +1,6 @@
 /*****************************************************************************
   genomeToREFrags.cpp
-  Last-modified: 07 Mar 2012 12:02:34 PM
+  Last-modified: 12 Mar 2012 06:21:21 PM
 
   (c) 2012 - Yunfei Wang
   Center for Systems Biology
@@ -30,7 +30,7 @@ void Help()
     cerr << "Program: genomeToREFrags (v" << VERSION << ")" << endl; 
     cerr << "Author:  Yunfei Wang (tszn1984@gmail.com)" << endl;
     cerr << "Summary: Split genome file into Resitriction Enzyme fragments." << endl;
-    cerr << "Usage:   genomeToREFrags [OPTIONS] -g <genome.fa> -c <AAGCTT> -b <REname.bed> -f <REends.fa>" << endl << endl;
+    cerr << "Usage:   genomeToREFrags [OPTIONS] -g <genome.fa> -c <AAGCTT> -b <REname.bed> -f <REends.fa> -r <20>" << endl << endl;
 	
 	cerr << "Options:" << endl;
 	
@@ -43,7 +43,6 @@ void Help()
 	cerr << "\t-f:--fa_output        Fasta file of the RE end fragments. (default <ends.fa>)" << endl << endl;
 	
 	cerr << "Parameters:" << endl;
-	cerr << "\t-s:--split            Split RE fragments to two ends. (0 or 1, default <0>)" << endl << endl;
 	cerr << "\t-r:--read_len         Read length (RE end length) from the cutting position. (default <20>)" << endl << endl;
 	cerr << "\t-h:--help             Show help information." << endl << endl;
     
@@ -57,7 +56,6 @@ int main( int argc, char *argv[])
 	string   genomeFile;
 	string   bedFile           = "stdout";
 	string   faFile            = "ends.fa";
-	bool     split             = false;
 	CHRPOS   readLen           = 20;
 
 	// Show help when has no options
@@ -93,19 +91,10 @@ int main( int argc, char *argv[])
 			if ((++i) < argc)
 				faFile=argv[i];
 		}
-		else if ((PARAMETER_CHECK("-s", 2, parameterLength)) || (PARAMETER_CHECK("--split", 7, parameterLength)))
-		{
-			if ((++i) < argc)
-			{
-				if (argv[i][0]=='1')
-					split=true;
-			}
-
-		}
 		else if ((PARAMETER_CHECK("-r", 2, parameterLength)) || (PARAMETER_CHECK("--read_len", 10, parameterLength)))
 		{
 			if ((++i) < argc)
-				readLen = ToValue<CHRPOS>(argv[i]);
+				readLen = StringUtils::toValue<CHRPOS>(argv[i]);
 		}
 		else
 		{
@@ -136,10 +125,10 @@ int main( int argc, char *argv[])
 	Writer faOutput(faFile);
 
 	
-	// Open files
-	fhfa.Open();
-	bedOutput.Open();
-	faOutput.Open();
+	// open files
+	fhfa.open();
+	bedOutput.open();
+	faOutput.open();
 
 	// Read the genome file.
 	while (fhfa.getNext(curFa))	
@@ -161,46 +150,29 @@ int main( int argc, char *argv[])
 				flag=false;
 			}
 
-			if(split)
+			(*(bedOutput.Printer())) << curFa.id << "\t" << lindex << "\t" << rindex << "\t" << (lindex+rindex)/2 << endl;
+			if (rindex - lindex >= 2*readLen)
 			{
-				(*(bedOutput.Printer())) << curFa.id << "\t" << lindex << "\t" << (lindex+rindex)/2 << "\t" << (3*lindex+rindex)/4 << endl;
-				(*(bedOutput.Printer())) << curFa.id << "\t" << (lindex+rindex)/2 << "\t" << rindex << "\t" << (lindex+3*rindex)/4 << endl;
-				if (rindex - lindex >= readLen)
-				{
-					bedCount[curFa.id]++;
-					bedSum[curFa.id]+=rindex-lindex;
-					(*(faOutput.Printer())) << ">" << curFa.id << "_" << (3*lindex+rindex)/4 << endl;
-					(*(faOutput.Printer())) << curFa.seq.substr(lindex,readLen) << endl;
-					(*(faOutput.Printer())) << ">" << curFa.id << "_" << (lindex+3*rindex)/4 << endl;
-					(*(faOutput.Printer())) << curFa.seq.substr(rindex-readLen,readLen) << endl;
-				}
-			}
-			else
-			{
-				(*(bedOutput.Printer())) << curFa.id << "\t" << lindex << "\t" << rindex << "\t" << (lindex+rindex)/2 << endl;
-				if (rindex - lindex >= 2*readLen)
-				{
-					bedCount[curFa.id]++;
-					bedSum[curFa.id]+=rindex-lindex;
-					(*(faOutput.Printer())) << ">" << curFa.id << "_" << (lindex+rindex)/2 << "_L" << endl;
-					(*(faOutput.Printer())) << curFa.seq.substr(lindex,readLen) << endl;
-					(*(faOutput.Printer())) << ">" << curFa.id << "_" << (lindex+rindex)/2 << "_R" << endl;
-					(*(faOutput.Printer())) << curFa.seq.substr(rindex-readLen,readLen) << endl;
-				}
+				bedCount[curFa.id]++;
+				bedSum[curFa.id]+=rindex-lindex;
+				(*(faOutput.Printer())) << ">" << curFa.id << "_" << (lindex+rindex)/2 << "_L" << endl;
+				(*(faOutput.Printer())) << curFa.seq.substr(lindex,readLen) << endl;
+				(*(faOutput.Printer())) << ">" << curFa.id << "_" << (lindex+rindex)/2 << "_R" << endl;
+				(*(faOutput.Printer())) << curFa.seq.substr(rindex-readLen,readLen) << endl;
 			}
 			lindex=rindex+siteLen;
 		}
 	}
 	
-	// Close files
-	fhfa.Close();
-	bedOutput.Close();
-	faOutput.Close();
+	// close files
+	fhfa.close();
+	bedOutput.close();
+	faOutput.close();
 
 	// print statistics into log file
 	Writer log(cutSeq+".log");
-	log.Open();
-	log.Close();
+	log.open();
+	log.close();
 	
 	return 0;
 }

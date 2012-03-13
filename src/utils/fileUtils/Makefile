@@ -11,7 +11,7 @@ INCLUDES = -I$(UTILITIES_DIR)/gzstream/ -I$(UTILITIES_DIR)/stringUtils/
 # ----------------------------------
 SOURCES= fileUtils.cpp
 OBJECTS= $(SOURCES:.cpp=.o)
-_EXT_OBJECTS=gzstream.o stringUtils.o
+_EXT_OBJECTS=gzstream.o 
 EXT_OBJECTS=$(patsubst %,$(OBJ_DIR)/%,$(_EXT_OBJECTS))
 BUILT_OBJECTS= $(patsubst %,$(OBJ_DIR)/%,$(OBJECTS))
 

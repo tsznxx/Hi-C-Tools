@@ -19,7 +19,7 @@ INCLUDES = -I$(UTILITIES_DIR)/common/ \
 # ----------------------------------
 SOURCES= intersectBed.cpp
 OBJECTS= $(SOURCES:.cpp=.o)
-_EXT_OBJECTS=stringUtils.o gzstream.o fileUtils.o seqUtils.o bedUtils.o
+_EXT_OBJECTS=gzstream.o fileUtils.o seqUtils.o bedUtils.o
 PROGRAM= intersectBed
 
 EXT_OBJECTS=$(patsubst %,$(OBJ_DIR)/%,$(_EXT_OBJECTS))

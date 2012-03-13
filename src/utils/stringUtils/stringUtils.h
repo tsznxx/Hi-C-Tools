@@ -1,6 +1,6 @@
 /*****************************************************************************
   stringUtils.h
-  Last-modified: 16 Feb 2012 08:56:19 PM
+  Last-modified: 12 Mar 2012 06:04:17 PM
 
   (c) 2012 - Yunfei Wang
   Center for Systems Biology
@@ -22,20 +22,22 @@
 
 using namespace std;
 
-// ToString
+namespace StringUtils
+{
+// toString
 template <typename T>
 inline
-string ToString(const T &value)
+string toString(const T &value)
 {
     stringstream ss;
     ss<< value;
     return ss.str();
 }
 
-// ToValue
+// toValue
 template <typename T>
 inline
-T ToValue( const string &str)
+T toValue( const string &str)
 {
     stringstream stream; //for temporal storage
     T value; // for output value
@@ -56,9 +58,9 @@ outT convert(const inT & t)
 
 }
 
-// Tokenize
+// tokenize
 inline 
-void Tokenize(const string &str, vector<string> &elems, const string delimiter="\t")
+void tokenize(const string &str, vector<string> &elems, const string delimiter="\t")
 {
     char *tok;
     char cchars[str.size()+1]; // chars to store str
@@ -75,7 +77,7 @@ void Tokenize(const string &str, vector<string> &elems, const string delimiter="
 
 template<typename T>
 inline 
-void Tokenize(const string &str, vector<T> &elems, const string delimiter="\t")
+void tokenize(const string &str, vector<T> &elems, const string delimiter="\t")
 {
     char *tok;
     char cchars[str.size()+1];
@@ -89,6 +91,6 @@ void Tokenize(const string &str, vector<T> &elems, const string delimiter="\t")
         tok=strtok(NULL,delimiter.c_str());
     }
 }
-
+}
 
 #endif //STRINGUTILS_H

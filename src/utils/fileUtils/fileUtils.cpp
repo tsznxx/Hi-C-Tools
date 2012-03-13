@@ -1,6 +1,6 @@
 /*****************************************************************************
   fileUtils.cpp
-  Last-modified: 07 Mar 2012 11:46:42 AM
+  Last-modified: 13 Mar 2012 12:11:30 PM
 
   (c) 2012 - Yunfei Wang
   Center for Systems Biology
@@ -29,19 +29,19 @@ Reader::Reader(const string &fname):_inFile(fname)
 // Destructor
 Reader::~Reader(void)
 {
-	Close();
+	close();
 }
 
 // Set file name
 void Reader::setFileName(const string &fname)
 {
 	if(_inStream) // close existing file handle
-		Close();
+		close();
 	_inFile=fname;
 }
 	
 // Open
-void Reader::Open(void)
+void Reader::open(void)
 {
 	// stdin
 	if (_inFile == "stdin")
@@ -86,7 +86,7 @@ void Reader::Open(void)
 }
 
 // Close
-void Reader::Close(void)
+void Reader::close(void)
 {
 	if (_inFile != "stdin" )
 	{
@@ -116,18 +116,18 @@ Writer::Writer(const string &outfile):_outFile(outfile),_outStream(NULL)
 // Destructor
 Writer::~Writer(void)
 {
-	Close();
+	close();
 }
 
 // Set file name
 void Writer::setFileName(const string &fname)
 {
 	_outFile=fname;
-	Close();
+	close();
 }
 
 //// Open
-void Writer::Open(void)
+void Writer::open(void)
 {
 	if(_outFile == "stdout")
 		_outStream = &cout;
@@ -149,7 +149,7 @@ void Writer::Open(void)
 }
 
 // Close
-void Writer::Close(void)
+void Writer::close(void)
 {
 	if( _outStream != &cout && _outStream!=NULL )
 	{
@@ -194,7 +194,7 @@ LineStatus ColumnReader::getNext(LINE_ELEMS &elems,bool withheader)
 		}
 		else
 		{
-			Tokenize(curline,elems,_delimiter);
+			StringUtils::tokenize(curline,elems,_delimiter);
 			if (elems.size())
 			{
 				_colNum=elems.size();

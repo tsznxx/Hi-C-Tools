@@ -1,6 +1,6 @@
 /*****************************************************************************
   fileUtils.h
-  Last-modified: 07 Mar 2012 11:42:48 AM
+  Last-modified: 12 Mar 2012 06:07:48 PM
 
   (c) 2012 - Yunfei Wang
   Center for Systems Biology
@@ -43,10 +43,10 @@ public:
     void setFileName(const string &filename="stdin");
         
     // Open
-    void Open(void);
+    void open(void);
 
     // Close
-    void Close(void);
+    void close(void);
 
 protected:
     istream *_inStream;
@@ -72,10 +72,10 @@ public:
     void setFileName(const string &fname);
 
     // Open
-    void Open(void); // may extended to binary open
+    void open(void); // may extended to binary open
 
     // Close
-    void Close(void);
+    void close(void);
 
     // Printer
     ostream * Printer(void);

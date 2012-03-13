@@ -1,0 +1,7 @@
+2012-03-12:
+Utils name rules:
+	Fild folder: uncapitalized for the first word and capitalized for the others.
+	Namespace:   Capitalized for all words.
+	Class:       Capitalized for all words.
+	Class member: Uncapitalized for the first word and capitalized for the others. Some more private members should start with underline "_";
+

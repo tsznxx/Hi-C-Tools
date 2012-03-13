@@ -1,6 +1,6 @@
 /*****************************************************************************
   bedFile.h
-  Last-modified: 07 Mar 2012 03:59:18 PM
+  Last-modified: 13 Mar 2012 01:30:04 PM
 
   (c) 2012 - Yunfei Wang
   System biology center
@@ -19,6 +19,7 @@
 #include <map>
 #include <string>
 #include <algorithm>
+#include <iomanip>
 
 
 // "local" includes
@@ -142,7 +143,7 @@ public:
     // IOstream  <<
     friend inline ostream & operator << (ostream & os, Bed &B )
     {
-        cout << B.chrom << "\t" << B.start << "\t" << B.end << "\t" << B.name << "\t" << B.score << "\t" << B.strand;
+        os << B.chrom << "\t" << B.start << "\t" << B.end << "\t" << B.name << "\t" << setpricision(4) << B.score << "\t" << B.strand;
         return os;
     }
 

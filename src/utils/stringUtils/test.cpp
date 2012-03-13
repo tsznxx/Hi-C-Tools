@@ -1,27 +1,25 @@
+/*****************************************************************************
+  test.cpp
+  Last-modified: 12 Mar 2012 06:17:13 PM
+
+  (c) 2012 - Yunfei Wang
+  Center for Systems Biology
+  Department of Molecular & Cell Biology
+  University of Texas at Dallas
+  tszn1984@gmail.com
+
+  Licensed under the GNU General Public License 2.0 license.
+******************************************************************************/
+
 #include <iostream>
 #include <string>
 #include "stringUtils.h"
 
 using namespace std;
 
-int main()
+int main(int argc, char* argv[])
 {
-	string a="10.2";
-	string b="100";
-	string c="10\t20\t30";
-	vector<int> lst;
-	int i=8;
-	float j=0.24;
-	cout <<ToString(i) << ToString(j) <<endl;
-	i=ToValue<int>(b);
-	j=ToValue<float>(a);
-	cout << i << j << ToString(i) << ToString(j) << endl;
-    Tokenize(c,lst);
-	cout <<lst[0] << "," <<lst[1] <<endl;
-	cout << ToValue<bool>("3") << endl;
-	cout << ToValue<bool>("0") << endl;
-	cout << ToValue<bool>("true") << endl;
-	cout << ToValue<bool>("false") << endl;
-	return 0;
+	cout << StringUtils::toString(100) << endl;
+    return 0;
 }
 

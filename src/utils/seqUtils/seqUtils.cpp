@@ -53,7 +53,7 @@ SeqReader::SeqReader(const string &fname):Reader(fname)
 // Destructor
 SeqReader::~SeqReader(void)
 {
-	Close();
+	close();
 }
 
 
