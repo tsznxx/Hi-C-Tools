@@ -11,14 +11,20 @@ export BIN_DIR	= bin
 export SRC_DIR	= src
 export UTIL_DIR	= src/utils
 export CXX		= g++
-export CXXFLAGS = -Wall -O2 -D_FILE_OFFSET_BITS=64 -fPIC
+export CXXFLAGS = -Wall -O3 -D_FILE_OFFSET_BITS=64 -fPIC
 export LIBS		= -lz
 export BT_ROOT  = src/utils/BamTools/
 
 
 SUBDIRS = $(SRC_DIR)/test \
+          $(SRC_DIR)/selectIn \
+          $(SRC_DIR)/fastqFilter \
+		  $(SRC_DIR)/fastqTrimmer \
 	      $(SRC_DIR)/genomeToREFrags \
 		  $(SRC_DIR)/endsMappAbility \
+		  $(SRC_DIR)/seqToContact \
+		  $(SRC_DIR)/rsidpairs2ldr \
+		  $(SRC_DIR)/rsidreader
 #		  $(SRC_DIR)/bedsAnnotation
 #		  $(SRC_DIR)/intersectBed 
 

@@ -1,6 +1,6 @@
 /*****************************************************************************
   seqUtils.h
-  Last-modified: 07 Mar 2012 11:58:04 AM
+  Last-modified: 09 Jul 2012 11:56:50 AM
 
   (c) 2012 - Yunfei Wang
   Center for Systems Biology
@@ -28,11 +28,11 @@ public:
     string seq;
 
 public:
-    // Construction
+    // Constructor
 	Fasta(){};
     Fasta(const string &tid,const string &tseq);
 
-    // Destruction
+    // Destructor
     ~Fasta(void){};
 
     // Length of the seq
@@ -51,33 +51,68 @@ public:
     string phred;
     
 public:
-    // Construction
+    // Constructor
+	Fastq(){};
     Fastq(const string &tid, const string  &tseq, const string &tphred);
 
-    // Destruction
+    // Destructor
     ~Fastq(void){};
 
     // Get the mean Q(Phred) score
-    float meanQ(int offset=33)
+    float meanQ(int offset=PHREDOFFSET)
     {
         int psum,lseq;
+		lseq=seq.size();
         for(int i=0;i<lseq;i++)
         {
             psum+=phred.c_str()[i]-offset;
         }
         return (float)psum/lseq;
     }
-        
+
+	friend inline ostream & operator << (ostream & os, Fastq &B )
+	{
+		os << "@" << B.id << endl << B.seq << endl << "+" << endl << B.phred<< endl;
+		return os;
+	}
+	
 }; 
+
+class Genome {
+  
+    // ctor & dtor
+    public:
+        Genome(void);
+        ~Genome(void);
+            
+    // file-handling methods
+    public:
+        bool Close(void);
+        bool Open(const std::string& filename, const std::string& indexFilename = "");
+            
+    // sequence access methods
+    public:
+        bool GetBase(const int& refID, const int& position, char& base);
+        bool GetSequence(const int& refId, const int& start, const int& stop, std::string& sequence);
+            
+    // index-handling methods
+    public:
+        bool CreateIndex(const std::string& indexFilename);
+
+    // internal implementation
+    private:
+        struct FastaPrivate;
+        FastaPrivate* d;
+};
 
 class SeqReader: public Reader
 {
 
 public:
-    // Construction
+    // Constructor
     SeqReader(const string &fname="stdin"); // Since we have the filename, it's better to open it here.
 	
-	// Destruction
+	// Destructor
     ~SeqReader(void); // Remember to close the file handle.
 
     // Get next Fasta record

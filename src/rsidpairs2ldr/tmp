@@ -1,0 +1,60 @@
+	// Show help when has no options
+	if(argc <= 1)
+	{
+		Help();
+		return 0;
+	}
+
+	// Parsing options
+	for(int i = 1; i < argc; i++)
+	{
+		int parameterLength = (int)strlen(argv[i]);
+		if((PARAMETER_CHECK("-h", 2, parameterLength)) || (PARAMETER_CHECK("--help", 5, parameterLength))) 
+			showHelp=true;
+		else if((PARAMETER_CHECK("-1", 2, parameterLength)) || (PARAMETER_CHECK("--read1", 7, parameterLength)))
+		{
+			if ((++i) < argc) 
+				read1 = argv[i];
+		}
+		else if((PARAMETER_CHECK("-2", 2, parameterLength)) || (PARAMETER_CHECK("--read2", 7, parameterLength)))
+		{
+			if ((++i) < argc)
+			{
+				read2 = argv[i];
+				isPaired = true;
+			}
+		}
+		else if ((PARAMETER_CHECK("-p", 2, parameterLength)) || (PARAMETER_CHECK("--prefix", 8, parameterLength)))
+		{
+			if ((++i) < argc)
+				prefix = argv[i];
+		}
+		else if ((PARAMETER_CHECK("-o", 2, parameterLength)) || (PARAMETER_CHECK("--offset", 8, parameterLength)))
+		{
+			if ((++i) < argc)
+				offset = StringUtils::toValue<int>(argv[i]);
+		}
+		else if ((PARAMETER_CHECK("-t", 2, parameterLength)) || (PARAMETER_CHECK("--threshold", 11, parameterLength)))
+		{
+			if ((++i) < argc)
+			{
+				threshold = StringUtils::toValue<int>(argv[i]);
+				if (threshold <0 || threshold >50)
+				{
+					cerr << endl << "*****ERROR: Threshold should be within 0~50, reset to default: 30. *****" << endl << endl;
+					threshold = 30;
+				}
+			}
+		}
+		else
+		{
+			cerr << endl << "*****ERROR: Unrecognized parameter: " << argv[i] << " *****" << endl << endl;
+			showHelp = true;
+		}
+	}
+	
+	// Show help if no proper auguments.
+	if (showHelp)
+	{
+		Help();
+		return 0;

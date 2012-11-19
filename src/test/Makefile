@@ -12,6 +12,7 @@ INCLUDES = -I$(UTILITIES_DIR)/common/ \
            -I$(UTILITIES_DIR)/gzstream/ \
 		   -I$(UTILITIES_DIR)/fileUtils/ \
 		   -I$(UTILITIES_DIR)/seqUtils/ \
+		   -I$(UTILITIES_DIR)/BamTools/ \
 		   -I$(UTILITIES_DIR)/bedUtils/
 
 # ----------------------------------
@@ -19,7 +20,7 @@ INCLUDES = -I$(UTILITIES_DIR)/common/ \
 # ----------------------------------
 SOURCES= test.cpp
 OBJECTS= $(SOURCES:.cpp=.o)
-_EXT_OBJECTS=gzstream.o fileUtils.o seqUtils.o bedUtils.o
+_EXT_OBJECTS=gzstream.o fileUtils.o seqUtils.o bedUtils.o BamReader.o BGZF.o BamIndex.o
 PROGRAM= test
 
 EXT_OBJECTS=$(patsubst %,$(OBJ_DIR)/%,$(_EXT_OBJECTS))

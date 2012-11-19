@@ -125,6 +125,7 @@ void BedUtils::bowtieToBed(Bed &tbed, const LINE_ELEMS &elems)
 	tbed.end    = tbed.start+elems[4].size();
 	tbed.name   = elems[0];
 	tbed.strand = elems[1];
+	tbed.score  = 1.0/(StringUtils::toValue<float>(elems[6])+1); // 1.0/#hits
 }
 
 // Load Bed file into BedVec
@@ -161,16 +162,17 @@ void BedUtils::loadBedVecToMap   (BedMap &bedmap, const BedVec & bedvector)
 }
 
 // Intersect Bed
-void BedUtils::intersectBed (const Bed &tbed, BedMap &bedmap, Hits &hits, const bool &forcestrand)
+void BedUtils::intersectBed (const Bed &tbed, BedMap &bedmap, OverlapMap &overlaps, const bool &forcestrand)
 {
 	CHRPOS overlap;
 	BIN startBin,endBin,offset;
-	BedVec::const_iterator bedItr;
-	BedVec::const_iterator bedEnd;
+	BedVec::iterator bedItr;
+	BedVec::iterator bedEnd;
 
 	startBin = tbed.start   >> _binFirstShift;
 	endBin   = (tbed.end-1) >> _binFirstShift;
 
+	overlaps.clear();
 	for (BINLEVEL i = 0; i < _binLevels; ++i) // while(startBin!=endBin)
 	{
 		offset = _binOffsetsExtended[i];
@@ -182,7 +184,7 @@ void BedUtils::intersectBed (const Bed &tbed, BedMap &bedmap, Hits &hits, const 
 			{
 				overlap = tbed.overlapLength(*bedItr, forcestrand);
 				if(overlap)
-					hits[overlap].push_back(*bedItr);
+					overlaps[overlap].push_back(&(*bedItr)); // Pointer stored here.
 			}
 		}
 		startBin >>= _binNextShift;

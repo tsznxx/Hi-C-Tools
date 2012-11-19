@@ -1,6 +1,6 @@
 /*****************************************************************************
   fileUtils.h
-  Last-modified: 12 Mar 2012 06:07:48 PM
+  Last-modified: 15 Nov 2012 04:28:05 PM
 
   (c) 2012 - Yunfei Wang
   Center for Systems Biology
@@ -79,6 +79,15 @@ public:
 
     // Printer
     ostream * Printer(void);
+
+	// overload <<
+/*	template<class T>
+	friend ostream& operator<<(ostream& os, const T &item)
+	{
+		os = _outStream;
+		os << item;
+		return os;
+	}*/
 
 protected:
     string   _outFile;

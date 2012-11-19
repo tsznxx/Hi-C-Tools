@@ -1,7 +1,13 @@
 2012-03-12:
 Utils name rules:
-	Fild folder: uncapitalized for the first word and capitalized for the others.
-	Namespace:   Capitalized for all words.
-	Class:       Capitalized for all words.
+	File folder:  Uncapitalized for the first word and capitalized for the others.
+	Namespace:    Capitalized for all words.
+	Class:        Capitalized for all words.
 	Class member: Uncapitalized for the first word and capitalized for the others. Some more private members should start with underline "_";
 
+
+2012-11-18:
+rsidpairs2ldr
+	Calculate ldr from hapmap file. The inputfile should be preprocessed to '01' file. The output file is gzip file.
+rsidreader
+	Read result from 'rsidpairs2ldr'.

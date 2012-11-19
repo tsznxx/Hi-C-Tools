@@ -1,6 +1,6 @@
 /*****************************************************************************
-  endsMapbility.cpp
-  Last-modified: 13 Mar 2012 01:19:11 PM
+  endsMappAbility.cpp
+  Last-modified: 13 Mar 2012 04:49:18 PM
 
   (c) 2012 - Yunfei Wang
   Center for Systems Biology

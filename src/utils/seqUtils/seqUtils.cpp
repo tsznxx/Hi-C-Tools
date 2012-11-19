@@ -40,6 +40,10 @@ Fastq::Fastq(const string &tid, const string &tseq, const string &tphred):Fasta(
 	phred=tphred;
 }
 
+/*************************************
+Genome
+*************************************/
+
 
 /*************************************
  SeqReader
@@ -120,7 +124,12 @@ bool SeqReader::getNext(Fastq &fq)
 	if (_inStream->good())
 	{
 		getline(*_inStream,curline);
-		fq.id=curline.substr(1);
+		if (curline.size())
+		{
+			fq.id=curline.substr(1);
+		}
+		else
+			return false;
 		getline(*_inStream,fq.seq);
 		getline(*_inStream,curline);
 		getline(*_inStream,fq.phred);

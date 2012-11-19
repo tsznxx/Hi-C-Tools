@@ -1,6 +1,6 @@
 /*****************************************************************************
   common.h
-  Last-modified: 08 Mar 2012 11:03:18 AM
+  Last-modified: 18 May 2012 09:56:52 AM
 
   (c) 2012 - Yunfei Wang
   Center for Systems Biology
@@ -29,6 +29,8 @@
 *************************************************/
 
 #define MAXCHR 1000000000
+#define MAXSEQREADLEN 516
+#define PHREDOFFSET 33
 
 typedef uint32_t CHRPOS;
 typedef uint16_t BINLEVEL;

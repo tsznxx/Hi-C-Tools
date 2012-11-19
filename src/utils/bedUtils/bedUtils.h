@@ -1,6 +1,6 @@
 /*****************************************************************************
   bedFile.h
-  Last-modified: 13 Mar 2012 01:30:04 PM
+  Last-modified: 14 Mar 2012 04:01:16 PM
 
   (c) 2012 - Yunfei Wang
   System biology center
@@ -143,7 +143,7 @@ public:
     // IOstream  <<
     friend inline ostream & operator << (ostream & os, Bed &B )
     {
-        os << B.chrom << "\t" << B.start << "\t" << B.end << "\t" << B.name << "\t" << setpricision(4) << B.score << "\t" << B.strand;
+        os << B.chrom << "\t" << B.start << "\t" << B.end << "\t" << B.name << "\t" << setprecision(4) << B.score << "\t" << B.strand;
         return os;
     }
 
@@ -219,6 +219,7 @@ enum FileType
 //*************************************************
 
 typedef vector<Bed>    BedVec;
+typedef vector<Bed*>   pBedVec;
 //typedef vector<MATE> mateVector;
 
 typedef map<BIN, BedVec,    std::less<BIN> > binBeds;
@@ -228,8 +229,8 @@ typedef map<string, binBeds, std::less<string> >    BedMap;
 //typedef map<string, binsToMates, std::less<string> > masterMateMap;
 typedef map<string, BedVec, std::less<string> >     BedMapNoBin;
 
-// Hits of inersectBed < CHRPOS overlap, BedVec overlappedBeds>
-typedef map<CHRPOS,BedVec, std::greater<CHRPOS> > Hits;
+// Hits of inersectBed < CHRPOS overlap, pBedVec overlappedBeds>
+typedef map<CHRPOS,pBedVec, std::greater<CHRPOS> > OverlapMap;
 
 /************************************************
  * BedUtils
@@ -250,7 +251,7 @@ namespace BedUtils
 	void loadBedVecToMap (BedMap &bedmap, const BedVec & bedvector);
 
 	// IntersectBed
-	void intersectBed (const Bed &tbed, BedMap &bedmap, Hits &hits, const bool &forcestrand = false);
+	void intersectBed (const Bed &tbed, BedMap &bedmap, OverlapMap &overlaps, const bool &forcestrand = false);
 	
 };
 

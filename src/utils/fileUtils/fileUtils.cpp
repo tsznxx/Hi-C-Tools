@@ -1,6 +1,6 @@
 /*****************************************************************************
   fileUtils.cpp
-  Last-modified: 13 Mar 2012 12:11:30 PM
+  Last-modified: 20 May 2012 09:22:55 PM
 
   (c) 2012 - Yunfei Wang
   Center for Systems Biology
@@ -10,9 +10,6 @@
 
   Licensed under the GNU General Public License 2.0 license.
 ******************************************************************************/
-
-#include <iostream>
-#include <string>
 
 #include "fileUtils.h"
 using namespace std;
@@ -24,7 +21,9 @@ using namespace std;
 
 // Constructor
 Reader::Reader(const string &fname):_inFile(fname)
-{}
+{
+	_inStream=NULL;
+}
 
 // Destructor
 Reader::~Reader(void)
@@ -38,6 +37,7 @@ void Reader::setFileName(const string &fname)
 	if(_inStream) // close existing file handle
 		close();
 	_inFile=fname;
+	_inStream=NULL;
 }
 	
 // Open
@@ -187,7 +187,7 @@ LineStatus ColumnReader::getNext(LINE_ELEMS &elems,bool withheader)
 	while(_inStream->good())
 	{
 		getline(*_inStream,curline);
-		if (curline.find_first_of("#")==0 && withheader) // suppress header information by set withheader = false
+		if (withheader && curline.find_first_of("#")==0) // suppress header information by set withheader = false
 		{
 			elems.push_back(curline);
 			return LINE_HEADER;
